@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <title>GET DOOFED</title>
+    <link href="assets/face.webp" rel="icon">
+    <style>
+        @font-face {
+            font-family: 'Neonderthaw';
+            src: url('assets/Neonderthaw-Regular.ttf') format('truetype');
+        }
+
+        body {
+            background: #fff;
+            transition: background-color 1s ease-in-out;
+        }
+
+        .after-hours-col {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        h3 {
+            font-size: 200px;
+            font-family: 'Neonderthaw', cursive;
+            color: #f08bf7;
+            padding-left: 80px;
+            text-shadow: 0 0 5px #f08bf7, 0 0 10px #f08bf7, 0 0 20px #f08bf7, 0 0 40px #f08bf7;
+
+            transition: opacity 1s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4 text-center rounded pt-5">
+                <div class="card shadow-lg">
+                    <img src="assets/face.webp" class="card-img-top" style="width: auto;" alt="Doofenshmirtz">
+                    <div id="volume-container">
+                        <input type="range" min="0" max="100" value="50" class="form-range volume">
+                    </div>
+                    <div class="card-body">
+                        <h1 class="fw-bold text-body-emphasis">Random-BGColor-inator</h1>
+                        <button type="button" class="btn btn-primary btn-lg px-4 gap-3 generate">Generate</button>
+                        <button type="button" class="btn btn-secondary btn-lg px-4 gap-3 return">Return</button>
+                        <button type="button" class="btn btn-dark btn-lg px-4 gap-3 after">After Hours</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 ml-5 after-hours-col">
+                <h3 class="d-none" id="AFTERHOURS">After Hours</h3>
+            </div>
+        </div>
+    </main>
+    <script>
+        const generateButton = document.querySelector('.generate');
+        const returnButton = document.querySelector('.return');
+        const afterHours = document.querySelector('.after');
+        const afterHoursText = document.querySelector('#AFTERHOURS');
+        const volumeContainer = document.querySelector('#volume-container');
+        const audio = new Audio('assets/doof.mp3');
+        const audio2 = new Audio('assets/after.mp3');
+
+        const generateColor = () => {
+            const x = Math.floor(Math.random() * 256);
+            const y = Math.floor(Math.random() * 256);
+            const z = Math.floor(Math.random() * 256);
+            const bgColor = `rgb(${x},${y},${z})`;
+            document.body.style.background = bgColor;
+        };
+
+        const changeColor = (color) => {
+            document.body.style.backgroundColor = color;
+        };
+
+        generateButton.addEventListener('click', function () {
+            const randomColor = generateColor();
+            changeColor(randomColor);
+            audio.volume = document.querySelector('.volume').value / 100;
+            audio.currentTime = 0;
+            audio.play();
+            audio2.pause();
+            afterHoursText.classList.add('d-none');
+        });
+
+        returnButton.addEventListener('click', function () {
+            changeColor('white');
+            audio.pause();
+            audio2.pause();
+            afterHoursText.classList.add('d-none');
+        });
+
+        afterHours.addEventListener('click', function () {
+            audio2.volume = document.querySelector('.volume').value / 100;
+            audio.pause();
+            audio2.play();
+            setTimeout(function () {
+                changeColor('black');
+            }, 3500);
+            setTimeout(function () {
+                afterHoursText.classList.remove('d-none');
+            }, 4000);
+        });
+
+        const volumeInput = document.querySelector('.volume');
+        volumeInput.addEventListener('input', function () {
+            audio.volume = volumeInput.value / 100;
+            audio2.volume = volumeInput.value / 100;
+        });
+
+        afterHoursText.classList.add('d-none');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
